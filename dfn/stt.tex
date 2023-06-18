@@ -1,0 +1,96 @@
+\begin{dfn}[$\stt$] \quad
+\begin{multicols}{3}
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$Id$}
+    \UIC{$\Gamma, p \Rightarrow p$}
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$L \bot$}
+    \UIC{$\Gamma, \bot \Rightarrow \Delta$}
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$R \top$}
+    \UIC{$\Gamma \Rightarrow \top$}
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{2}
+  \begin{prooftree}
+    \AXC{$\Gamma, A, B \Rightarrow \Delta$}
+    \RightLabel{$L \wedge$}
+    \UIC{$\Gamma, \uwave{A \wedge B} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \AXC{$\Gamma \Rightarrow B$}
+    \RightLabel{$R \wedge$}
+    \BIC{$ \Gamma \Rightarrow \uwave{A \wedge B}$}		
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{3}
+  \begin{prooftree}
+    \AXC{$ \Gamma, A \Rightarrow \Delta$}
+    \AXC{$\Gamma, B \Rightarrow \Delta$}
+    \RightLabel{$L \vee$}
+    \BIC{$ \Gamma, \uwave{A \vee B} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \RightLabel{$R \vee_1$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \vee B}$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow B$}
+    \RightLabel{$R \vee_2$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \vee B}$}		
+  \end{prooftree}
+\end{multicols}
+
+ \begin{multicols}{2}
+  \begin{prooftree}
+    \AXC{$\Gamma, \nabla (A \rightarrow B) \Rightarrow A$}
+    \AXC{$\Gamma, \nabla (A \rightarrow B), B \Rightarrow \Delta$}
+    \RightLabel{$L \rightarrow$}
+    \BIC{$\Gamma, \uwave{\nabla (A \rightarrow B)} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\nabla \Gamma, A \Rightarrow B$}
+    \RightLabel{$R \rightarrow$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \rightarrow B}$}		
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{2}
+  \begin{prooftree}
+    \AXC{$ \Gamma \Rightarrow \Delta$}
+    \RightLabel{$L w$}
+    \UIC{$ \Gamma, \uwave{\Sigma} \Rightarrow \Delta$}
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$ \Gamma \Rightarrow$}
+    \RightLabel{$R w$}
+     \UIC{$\Gamma \Rightarrow \uwave{A}$}		
+  \end{prooftree}
+ \end{multicols}
+
+\begin{prooftree}
+  \AXC{$\Gamma \Rightarrow \Delta$}
+  \RightLabel{$N$}
+  \UIC{$\nabla \Gamma \Rightarrow \nabla \Delta$}
+\end{prooftree}
+
+By $\stt \vdash \Gamma \Rightarrow \Delta$ we mean that the sequent $\Gamma \Rightarrow \Delta$ provable in this system.
+
+By $\stt^+ \vdash \Gamma \Rightarrow \Delta$ we mean that the sequent $\Gamma \Rightarrow \Delta$ provable in the above system, augmented with the $cut$ rule.
+\end{dfn}

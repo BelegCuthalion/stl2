@@ -1,0 +1,1104 @@
+\documentclass[10pt,a4paper]{amsart}
+\input{preamble}
+
+\begin{document}
+
+\title{Interpolation for Logics of Spacetime}
+\author{Amirhossein Akbar Tabatabai}
+
+
+\author{Majid Alizadeh}
+
+\author{Alireza Mahmoudian}
+
+\date{\today}
+ 
+\begin{abstract}
+	\input{abstract}
+\end{abstract}
+
+\maketitle
+
+\keywords{Intuitionistic Logic, Cut-elimination, Interpolation}
+
+\subjclass{03B20, 03F05, 03C40}
+
+\section{Introduction}
+\input{introduction}
+
+\subsection{Notation}
+In the following, a formula of language $\mathcal{L}$ is a free construction of operators $\bot$, $\top$, $\nabla$, $\vee$, $\wedge$ and $\rightarrow$, which have arities $0$, $0$, $1$, $2$, $2$ and $2$, respectively, over a countable set of atoms. We might also use the shorthand $\Box A$ for $\top \rightarrow A$.
+$\Gamma$, $\Sigma$ and $\Pi$ are names for finite multi-sets of formulas, $\Delta$ for a sub-singleton of some formula, $A$, $B$ and $C$ for formulas, $p$ for atoms and $n$, $l$, $r$ and $k$ for natural numbers. We denote by $P$ the set of all atoms, and by $P(A)$ the set of those that occur in the formula $A$.
+
+We will write $A$ for the singleton $\{A\}$ where ever it is inferable from the context.
+``$,$'' is the multi-set union. We will also use the following short-hands.
+\begin{flushleft}
+  $ A^1 = \{ A \} $ \\
+  $ A^{n+1} = A^n, A $ \\
+  $ \Gamma^1 = \Gamma $ \\
+  $ \Gamma^{n+1} = \Gamma^n, \Gamma $ \\
+  $ \nabla^1 A = \nabla A $ \\
+  $ \nabla^{n+1} A = \nabla (\nabla^n A) $ \\
+  $ \nabla^n \Gamma = \{ \nabla^n A \mid A \in \Gamma \} $ \\
+  $ P(\Gamma) = \bigcup_{A \in \Gamma} P(A) $
+\end{flushleft}
+
+
+A sequent $\Gamma \Rightarrow \Delta$ is a binary relation between $\Gamma$, a multi-set of formulas called \emph{the antecedent} or \emph{the left-side}, and $\Delta$, a sub-singleton of some formula called \emph{the succedent} or \emph{the right-side}.
+
+
+We will construct trees, called \emph{proof-trees}, using a set of recursive rules, called a \emph{deductive system}, or simply \emph{system}.
+
+A rule $R$ is expressed as a relation between a set of $n$ sequents $\{ \Gamma_i \Rightarrow \Delta_i \mid 1 \leq i \leq n \}$ called \emph{premises} and a sequent $\Gamma \Rightarrow \Delta$ called \emph{conclusion}, and is written as follows.
+\begin{prooftree}
+  \AXC{$\Gamma_1 \Rightarrow \Delta_1$}
+  \AXC{$\dots$}
+  \AXC{$\Gamma_n \Rightarrow \Delta_n$}
+  \RightLabel{$R$}
+  \TIC{$\Gamma \Rightarrow \Delta$}
+\end{prooftree}
+
+A rule with $n = 0$ is called an \emph{axiom}. We will designate a specific formula in the conclusion of some rules, called \emph{the principal formula} of that rule, which will be indicated by writing it \uwave{underlined}.
+
+A proof-tree in a system is made up of instances of rules of that system. So in a system with the rule $R$, we can construct a proof-tree with root $\Gamma \Rightarrow \Delta$, if we have already constructed $n$ proof-trees with roots $\Gamma_i \Rightarrow \Delta_i$ for all $1 \leq i \leq n$.
+
+
+
+When a proof-tree, with $\Gamma \Rightarrow \Delta$ as root, is constructed using a system $S$, we say that $S$ proves $\Gamma \Rightarrow \Delta$, and write it as $S \vdash \Gamma \Rightarrow \Delta$.
+
+
+
+We will name proof-trees by $\D$, $\D'$ and so on, unless otherwise stated. We will name subtrees of $\D$ by $\D_0$, $\D_1$ and so on. We will frequently use induction to prove existence of some proof-tree, assuming existence of some other proof-tree $\D$. In such situations we will use notation $IH(\D)$ to denote the proof-tree that we will get from induction hypothesis.
+
+We will write $S \vdash_h \Gamma \Rightarrow \Delta$ to indicate the existence of a proof-tree of height $h$ for $\Gamma \Rightarrow \Delta$ in system $S$. We will also write $h(\D)$ for the height of a proof-tree $\D$.
+
+The set of all sequents provable by a system is called \emph{the logic} of that system. We will write the name for a logic in boldface to distinguish it from a system.
+
+We write $S \vdash^r A$ when we want to indicate that a system $S$ proves a formula $A$, with a proof-tree of rank $r$ (defined in the next section).
+
+
+\section{Sequent calculi for the logic of spacetime}
+In this section, will define the systems $\st$ (defined as $\istl(N)$ in \cite{amir}), $\stt$ and $\gstt$, and show that these systems are equivalent.
+
+\begin{dfn}[$cut$, Rank]\label{dfn:cut} \quad
+  \begin{center}
+    \begin{prooftree}
+      \AXC{$ \Gamma \Rightarrow A$}
+      \AXC{$\Sigma, A \Rightarrow \Delta$}
+      \RightLabel{$cut$}
+      \BIC{$\Gamma, \Sigma \Rightarrow \Delta$}
+    \end{prooftree}
+  \end{center}
+  $A$ is called \emph{the cut-formula} of a $cut$ or $\nabla cut$ instance.
+
+  \emph{Rank} of a formula $A$ is defined as
+  \[ \rho(A) = \begin{cases}
+  1 & \quad ; A \in P \cup \{ \bot, \top \} \\
+  \rho(B) & \quad ; A = \nabla B \\
+  max(\rho(B), \rho(C)) + 1 & \quad ; A = B \circ C \quad (\circ \in \{ \land, \lor, \rightarrow \})
+  \end{cases} \]
+  Notice that $\nabla$ does not increase the rank of a formula.
+  
+  We also define rank for rule instances and proof-trees as follows. Rank of an instance of the $cut$ rule with cut-formula $A$ is defined to be the rank of $A$. Rank of any other rule instance is $0$.
+  Rank of a proof-tree $\D$, written as $\rho(\D)$, is the maximum rank of all of its rule instances.  
+\end{dfn}
+
+
+Define the sequent-style system $\st$ by the following rules.
+\input{dfn/st}
+
+In this part we will define the system $\stt$, which will be shown equivalent to $\st$. The two systems are very similar, except for the axioms, and the ruels $L \wedge$, $L \rightarrow$, and $Lw$. Notice that $Lc$ is not present in $\stt$, which is essential to out cut-elimimnation method.
+\input{dfn/stt}
+
+To show that $\st$ and $\stt$ are equivalent, we need to show the following lemmas.
+
+\begin{lem}[$Id$]\label{lem:stt-id-form}
+	$\stt \vdash \Gamma, A \Rightarrow A$.
+\end{lem}
+\begin{proof}
+	By induction on the structure of $A$. Let $A$ have any of the following forms.
+
+($p$) $Id$ proves $\Gamma, p \Rightarrow p$.
+
+($\bot$) $L \bot$ proves $\Gamma, \bot \Rightarrow \bot$.
+
+($\top$) $R \top$ proves $\Gamma, \top \Rightarrow \top$.
+
+($B \wedge C$) By IH we have $\stt \vdash B \Rightarrow B$ and $\stt \vdash C \Rightarrow C$. By $Lw$ we have $\stt \vdash B, C \Rightarrow B$ and $\stt \vdash B, C \Rightarrow C$. By $R \wedge$ we have $\stt \vdash B, C \Rightarrow B \wedge C$. By $L \wedge$ we have $\stt \vdash B \wedge C \Rightarrow B \wedge C$.
+\begin{prooftree}
+  \AXC{IH}
+  \noLine
+  \UIC{$\Gamma, B \Rightarrow B$}
+  \RightLabel{$Lw$}
+  \UIC{$\Gamma, B, C \Rightarrow B$}
+  \AXC{IH}
+  \noLine
+  \UIC{$\Gamma, C \Rightarrow C$}
+  \RightLabel{$Lw$}
+  \UIC{$\Gamma, B, C \Rightarrow C$}
+  \RightLabel{$R \wedge$}
+  \BIC{$\Gamma, B, C \Rightarrow B \wedge C$}
+  \RightLabel{$L \wedge$}
+  \UIC{$\Gamma, B \wedge C \Rightarrow B \wedge C$}
+\end{prooftree}
+
+($B \vee C$)
+\begin{prooftree}
+  \AXC{IH}
+  \noLine
+  \UIC{$\Gamma, B \Rightarrow B$}
+  \RightLabel{$R \vee$}
+  \UIC{$\Gamma, B \Rightarrow B \vee C$}
+  \AXC{IH}
+  \noLine
+  \UIC{$\Gamma, C \Rightarrow C$}
+  \RightLabel{$R \vee$}
+  \UIC{$\Gamma, C \Rightarrow B \vee C$}
+  \RightLabel{$L \vee$}
+  \BIC{$\Gamma, B \vee C \Rightarrow B \vee C$}
+\end{prooftree}
+
+($B \rightarrow C$)
+\begin{prooftree}
+  \AXC{IH} \noLine
+  \UIC{$\nabla \Gamma, \nabla (B \rightarrow C), B \Rightarrow B$}
+  \AXC{IH} \noLine
+  \UIC{$\nabla \Gamma, \nabla (B \rightarrow C), C \Rightarrow C$}
+  \RightLabel{$L \rightarrow$}
+  \BIC{$\nabla \Gamma, \nabla (B \rightarrow C), B \Rightarrow C$}
+  \RightLabel{$R \rightarrow$}
+  \UIC{$\Gamma, B \rightarrow C \Rightarrow B \rightarrow C$}
+\end{prooftree}
+
+($\nabla B$)
+\begin{prooftree}
+  \AXC{IH} \noLine
+  \UIC{$B \Rightarrow B$}
+  \RightLabel{$N$}
+  \UIC{$\nabla B \Rightarrow \nabla B$}
+  \RightLabel{$Lw$}
+  \UIC{$\Gamma, \nabla B \Rightarrow \nabla B$}
+\end{prooftree}
+
+\end{proof}
+
+\begin{lem}[Inversion]\label{lem:stt-inversion} \quad
+	\begin{enumerate}
+		\item If $\stt \vdash_h \Gamma, \nabla^n (A \wedge B) \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, \nabla^n A, \nabla^n B \Rightarrow \Delta$.
+		\item If $\stt \vdash_h \Gamma, \nabla^n (A \vee B) \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, \nabla^n A \Rightarrow \Delta$ and $\stt \vdash_h \Gamma, \nabla^n B \Rightarrow \Delta$.
+		\item If $\stt \vdash_h \Gamma \Rightarrow A \wedge B$ then $\stt \vdash_h \Gamma \Rightarrow A$ and $\stt \vdash_h \Gamma \Rightarrow B$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	We will use induction on the assumed proof-tree $\D$ for $\Gamma, \nabla^n (A \wedge B) \Rightarrow \Delta$, $\Gamma, \nabla^n (A \vee B) \Rightarrow \Delta$ and $\Gamma \Rightarrow A \wedge B$ for parts $1$, $2$ and $3$ of Lemma, repsectively, where it ends with a rule $R$. Notice that our construction does not increase the proof size.
+
+	Cases where $R$ is an axiom are trivial. In cases where $R$ is $L \wedge$, $L \vee$ and $R \wedge$ in parts $1$, $2$ and $3$, respectively, and $A \wedge B$ and $A \vee B$ are principal, which implies $n = 0$, the subtree(s) of $\D$ would prove the desired sequent. In all other cases just commute $R$ with $\IH(\D_0)$ (and $\IH(\D_1)$ if $R$ has two premises).	
+\end{proof}
+
+\begin{thm}[$Lc$]\label{thm:stt-lc-elim} If $\stt \vdash_h \Gamma, A^2 \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, A \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	By induction on the proof for $\Gamma, A^2 \Rightarrow \Delta$, which we call $\D$ and ends with rule $R$.
+	Cases for axioms are trivial. All cases where none of occurrences of $A$ are principal are handled by commuting $R$ with $\IH(\D_i)$. Now suppose $R$ is either of the following and $A$ is principal in $R$.
+	\begin{itemize}
+		\item[$(L \wedge)$] Let $A = A \wedge B$.
+		\begin{prooftree}
+			\AXC{$\D_0$} \noLine
+			\UIC{$\Gamma, A, B, A \wedge B \Rightarrow \Delta$}
+			\RightLabel{$L \wedge$}
+			\UIC{$\Gamma, (A \wedge B)^2 \Rightarrow \Delta$}		
+		\end{prooftree}
+		Then by Lemma \ref{lem:stt-inversion} we have $\Gamma, A^2, B^2 \Rightarrow \Delta$. Using induction hypothesis twice, we would have $\Gamma, A, B \Rightarrow \Delta$. $L \wedge$ will result in the desired sequent.
+	
+		\item[$(L \vee)$] Let $A = A \vee B$.
+		\begin{prooftree}
+			\AXC{$\D_0$} \noLine
+			\UIC{$ \Gamma, A, A \vee B \Rightarrow \Delta$}
+			\AXC{$\D_1$} \noLine
+			\UIC{$\Gamma, B, A \vee B \Rightarrow \Delta$}
+			\RightLabel{$L \vee$}
+			\BIC{$ \Gamma, (A \vee B)^2 \Rightarrow \Delta$}		
+		\end{prooftree}
+		By Lemma \ref{lem:stt-inversion} for $\D_0$ and $\D_1$ we have $\Gamma, A^2 \Rightarrow \Delta$ and $\Gamma, B^2 \Rightarrow \Delta$. By induction hypothesis we have $\Gamma, A \Rightarrow \Delta$ and $\Gamma, B \Rightarrow \Delta$. By $L \vee$ we have the desired sequent.
+	
+		\item[$(L \rightarrow)$] Let $A = \nabla (A \rightarrow B)$.
+		\begin{prooftree}
+			\AXC{$\D_0$} \noLine
+			\UIC{$\Gamma, (\nabla (A \rightarrow B))^2 \Rightarrow A$}
+			\AXC{$\D_1$} \noLine
+			\UIC{$\Gamma, B, (\nabla (A \rightarrow B))^2 \Rightarrow \Delta$}
+			\RightLabel{$L \rightarrow$}
+			\BIC{$\Gamma, (\nabla (A \rightarrow B))^2 \Rightarrow \Delta$}
+		\end{prooftree}
+		By induction hypothesis we have $\Gamma, \nabla (A \rightarrow B) \Rightarrow A$ and $\Gamma, B, \nabla (A \rightarrow B) \Rightarrow \Delta$. By $L \rightarrow$ we have the desired sequent.
+	\end{itemize}
+\end{proof}
+
+Now we are ready to show that $\stt$ is a contractino-free version of $\st$.
+
+\begin{thm}\label{thm:stt-eq-st} $\stt \vdash \Gamma \Rightarrow \Delta$ iff $\st \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	($\Rightarrow$) All the rules in $\stt$ are also in $\st$, except for $L \wedge$ and $L \rightarrow$, which can be easily imitated in $\st$ using the same logical rules and structural rules in $\st$. \\
+	($\Leftarrow$) All the rules in $\st$ are also in $\stt$, except for $Lc$, which can be imitated in $\stt$ using Theorem \ref{thm:stt-lc-elim}.
+\end{proof}
+
+\begin{thm}\label{thm:sttp-eq-stp}
+	$\stt^+ \vdash \Gamma \Rightarrow \Delta$ iff $\st^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	Similar to \ref{thm:stt-eq-st}.\\
+	($\Rightarrow$) By induction on the structure of $\D$, the proof-tree for $\Gamma \Rightarrow \Delta$ in $\stt^+$, which ends with rule $R$.
+	For the cases where $R$ is also a rule in $\st^+$, just apply $R$ on the proof-trees that we get from induction hypothesis for the sub-tree(s) of $\D$. If $R$ is $L \wedge$, we must use both $L \wedge_1$ and $L \wedge_2$, and $Lc$ in $\st^+$. If $R$ is $L \rightarrow$, we must use $Lw$ to prepare the context before using $L \rightarrow$ in $\st^+$.\\
+	($\Leftarrow$) Similar to the other direction, except that in the case for $Lc$ we must use Theorem \ref{thm:stt-lc-elim}.
+\end{proof}
+
+In this part we will introduce the system $\gstt$, which is essential for our cut-elimimnation method. The rules in $\gstt$ are the generalized versions of the rules in $\stt$, in such a way that arbitrary number of $\nabla$'s commutes with the logical operators on the antecedents of the sequents.
+
+\begin{dfn}[$\nabla cut$, Rank]
+The following rule generalizes the $cut$ rule.
+\begin{center}
+  \begin{prooftree}
+    \AXC{$ \Gamma \Rightarrow A$}
+    \AXC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+    \RightLabel{$\nabla cut$}
+    \BIC{$\nabla^n \Gamma, \Sigma \Rightarrow \Delta$}
+  \end{prooftree}
+\end{center}
+The notion of \emph{rank} for $\nabla cut$ is defined similar to Definition \ref{dfn:cut}.
+\end{dfn}
+
+\input{dfn/gstt}
+
+Now we are going to show that $\stt^+$ and $\gstt^+$ are equivalent, in the presense of their respecting cut rules. First, we need to show that the generalized rules in $\gstt^+$ can be immitated in $\stt^+$.
+
+\begin{lem}\label{lem:l-nabla-dist} \quad
+	\begin{enumerate}
+		\item $\stt^+ \vdash \nabla^n (A \vee B) \Rightarrow \nabla^n A \vee \nabla^n B$.
+	
+		\item $\stt^+ \vdash \nabla^n (A \wedge B) \Rightarrow \nabla^n A \wedge \nabla^n B$. 
+	
+		\item $\stt^+ \vdash \nabla^n (A \rightarrow B) \Rightarrow \nabla^n A \rightarrow \nabla^n B$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	\begin{enumerate}
+		\item First, observe that
+
+		\begin{prooftree}
+			\AXC{}
+			\RightLabel{$Ta$}
+			\UIC{$\nabla (\top \rightarrow C) \Rightarrow \top$}
+		
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$\nabla (\top \rightarrow C), C \Rightarrow C$}
+		
+			\RightLabel{$L \rightarrow$}
+			\BIC{$\nabla (\top \rightarrow C) \Rightarrow C$}
+		\end{prooftree}
+		
+		
+		Now, let $\D$ be the proof-tree above with $C = \nabla A \vee \nabla B$.
+		
+		\begin{prooftree}
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$\nabla A \Rightarrow \nabla A$}
+			\RightLabel{$R\vee_1$}
+			\UIC{$\nabla A \Rightarrow \nabla A \vee \nabla B$}
+			\RightLabel{$Lw$}
+			\UIC{$\nabla A , \top \Rightarrow \nabla A \vee \nabla B$}
+			\RightLabel{$R \rightarrow$}
+			\UIC{$A \Rightarrow \top \rightarrow (\nabla A \vee \nabla B)$}
+		
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$\nabla B \Rightarrow \nabla B$}
+			\RightLabel{$R\vee_2$}
+			\UIC{$\nabla B \Rightarrow \nabla A \vee \nabla B$}
+			\RightLabel{$Lw$}
+			\UIC{$\nabla B , \top \Rightarrow \nabla A \vee \nabla B$}
+			\RightLabel{$R \rightarrow$}
+			\UIC{$B \Rightarrow \top \rightarrow (\nabla A \vee \nabla B)$}
+		
+			\RightLabel{$L\vee$}
+			\BIC{$A \vee B \Rightarrow \top \rightarrow (\nabla A \vee \nabla B)$}
+			\RightLabel{$N$}
+			\UIC{$\nabla (A \vee B) \Rightarrow \nabla (\top \rightarrow (\nabla A \vee \nabla B))$}
+		
+			\AXC{$\D$}
+		
+			\RightLabel{$cut$}
+			\BIC{$\nabla (A \vee B) \Rightarrow \nabla A \vee \nabla B$}
+		\end{prooftree}
+		
+		Call this proof-tree $\D_1$. Construct $\D_n$ inductively as follows.
+		
+		\begin{prooftree}
+			\AXC{$\D_{n-1}$}
+			\noLine
+			\UIC{$\nabla^{n-1} (A \vee B) \Rightarrow \nabla^{n-1} A \vee \nabla^{n-1} B$}
+			\RightLabel{$N$}
+			\UIC{$\nabla^n (A \vee B) \Rightarrow \nabla (\nabla^{n-1} A \vee \nabla^{n-1} B)$}
+		
+			\AXC{$\D_1$}
+			\noLine
+			\UIC{$\nabla (\nabla^{n-1} A \vee \nabla^{n-1} B) \Rightarrow \nabla^n A \vee \nabla^n B$}
+			
+			\RightLabel{$cut$} \LeftLabel{$\D_n:$}
+			\BIC{$\nabla^n (A \vee B) \Rightarrow \nabla^n A \vee \nabla^n B$}
+		\end{prooftree}
+\pagebreak
+		\item \quad
+		\begin{prooftree}
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$A \Rightarrow A$}
+			\RightLabel{$L \wedge_1$}
+			\UIC{$A \wedge B \Rightarrow A$}
+			\RightLabel{$N$} \doubleLine
+			\UIC{$\nabla^n (A \wedge B) \Rightarrow \nabla^n A$}
+		
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$B \Rightarrow B$}
+			\RightLabel{$L \wedge_2$}
+			\UIC{$A \wedge B \Rightarrow B$}
+			\RightLabel{$N$} \doubleLine	
+			\UIC{$\nabla^n (A \wedge B) \Rightarrow \nabla^n B$}
+			
+			\RightLabel{$R \wedge$}
+			\BIC{$\nabla^n (A \wedge B) \Rightarrow \nabla^n A \wedge \nabla^n B$}
+		\end{prooftree}
+
+		\item \quad
+		\begin{prooftree}
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$A, \nabla (A \rightarrow B) \Rightarrow A$}
+		
+			\AXC{}
+			\RightLabel{$(Id)$}
+			\UIC{$A, \nabla (A \rightarrow B), B \Rightarrow B$}
+		
+			\RightLabel{$L \rightarrow$}
+			\BIC{$\nabla (A \rightarrow B) , A \Rightarrow B$}
+			\RightLabel{$N^{(n)}$} \doubleLine
+			\UIC{$\nabla^{n+1} (A \rightarrow B) , \nabla^n A \Rightarrow \nabla^n B$}
+			\RightLabel{$R \rightarrow$}
+			\UIC{$\nabla^n (A \rightarrow B) \Rightarrow \nabla^n A \rightarrow \nabla^n B$}
+		\end{prooftree}
+	\end{enumerate}
+\end{proof}
+
+\begin{thm}\label{thm:sttp-eq-gsttp} \quad
+	$\stt^+ \vdash \Gamma \Rightarrow \Delta$ iff $\gstt^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	($\Rightarrow$) Easily follows from the fact that all rules of $\stt^+$ are just instances of $\gstt^+$'s rules.\\
+	($\Leftarrow$) We will use induction on the proof-tree $\D$ for $\Gamma \Rightarrow \Delta$ in $\gstt^+$, which ends with rule $R$.
+	The cases for Axioms are trivial.
+	For the rules that are common between two systems, just apply $R$ on the proof-tree(s) from the induction hypothesis.
+	In the cases for $L \wedge$, $L \vee$ and $L \rightarrow$, do the same, and also $\nabla cut$ the sequents proved in Lemma \ref{lem:l-nabla-dist} into the resulting sequent. Finally, if $R$ is $\nabla cut$, just apply $N$ $n$ times before using $cut$ in $\stt^+$.	
+\end{proof}
+
+\section{Cut-elimination theorem}
+
+The next lemma will help in handling of a case in the main theorem.
+\begin{lem}\label{lem:gstt-top-redundant}
+If $\gstt \vdash^r \Gamma , \nabla^n \top \Rightarrow \Delta$ then $\gstt \vdash^r \Gamma \Rightarrow \Delta$.
+\end{lem}
+\begin{proof}
+	Suppose $\D$ is a proof-tree for $\Gamma , \nabla^n \top \Rightarrow \Delta$ in $\gstt$ and consider different cases for $R$, the last rule in $\D$.
+	By induction on $\D$ we can assume that the theorem holds for its subtrees.
+	First, observe that the cases where $R$ is an axiom are trivial. In all other cases, just apply induction hypothesis on the subtrees of $\D$, and then apply $R$. Notice that $\nabla cut$ is not used except in the case where $R$ is $\nabla cut$ itself, where it is applied with a cut-formula of the same rank. So the resulting proof-tree will not have a higher rank than $\D$.
+\end{proof}
+
+The following theorem shows that we can imitate any instance of the cut rule in a proof-tree of lower rank.
+
+\begin{thm}\label{thm:gstt-cut-reduction}
+	If $\gstt \vdash^{r_0} \Gamma \Rightarrow A$ and $\gstt \vdash^{r_1} \Sigma , \nabla^n A \Rightarrow \Delta$, where $r_0, r_1 < \rho(A)$, then $\gstt \vdash^{r_2} \nabla^n \Gamma, \Sigma \Rightarrow \Delta$ and $r_2 < \rho(A)$.
+\end{thm}
+\begin{proof}
+
+	We have two proof-trees
+	\[
+		\genfrac{}{}{0pt}{}{\D_0}{\Gamma \Rightarrow A}
+		\hspace{3em}
+		\genfrac{}{}{0pt}{}{\D_1}{\Sigma, \nabla^n A \Rightarrow \Delta}
+	\]
+	both of a lower rank than that of $A$, and we want to construct a proof-tree
+	\[\genfrac{}{}{0pt}{}{\D}{\nabla^n \Gamma, \Sigma \Rightarrow \Delta} \]
+	without increasing the cut rank.
+
+	The construction takes place in different cases for the last rule that occurs in $\D_0$ and $\D_1$, which we call $R_0$ and $R_1$, respectively.
+
+	The cases are divided into three parts. In the first part, our construction would depend only on $R_0$, and it would work in all cases for $R_1$. The second part is similar: Any of the remaining cases for $R_1$ will also cover all the cases for $R_0$. The cases that remain for the third part are the cases where our construction depends on \emph{both} $R_0$ and $R_1$, which are the cases that the cut-formula is altered in both of the proof-trees. In these cases, $R_1$ determines a specific form for the cut-formula, which will also determine $R_1$.
+
+	In first two parts of the cases, we will need induction hypothesis only for premises of one of the subtrees. But in the third part, we need to use induction hypotesis for premises in both $\D_0$ and $\D_1$. So we will apply induction on $h(\D_0) + h(\D_1)$, generalizing all other parameters. Thus, the induction hypothesis reads like this: For any two proof-trees $\D_0'$ and $\D_1'$ such that $h(\D_0') + h(\D_1') < h(\D_0) + h(\D_1)$, where $\D_0'$ proves $\Gamma' \Rightarrow A'$ and $\D_1'$ proves $\Sigma', \nabla^{n'} A'\Rightarrow \Delta'$ for arbitrary $\Gamma'$, $\Sigma'$, $\Delta'$, $A'$ and $n'$, for which we have $\rho(\D_0'),\rho(\D_1') < \rho(A')$, the induction hypothesis gives us a prooftree, denoted by $\IH(\D_0', \D_1')$, which proves $\nabla^{n'}\Gamma', \Sigma' \Rightarrow \Delta'$, and we will also have $\rho(\IH(\D_0', \D_1')) < \rho(A')$.
+
+	Now, in any of the following cases, suppose $\D_0$ and $\D_1$ end with any of the rules of $\gstt^+$, and construct the proof-tree $\D$ accordingly.
+
+	\textbf{Part I.} First, assume that $R_0$ is an axiom and $R_1$ is any rule. The cases where $R$ is $Id$ or $L \bot$ would be trivial, and $R \top$ is handled by Lemma \ref{lem:gstt-top-redundant}.
+	Now, let $R_0 \in \{ Lw, Rw, L \wedge, L \vee, L \rightarrow, \nabla cut, N \}$. In all these cases---again, independent of $\D_1$---it suffices to use induction on the premises(s) of this rule and $\D_1$ to remove the cut-formula from both subtrees. Then, we can apply $R$ again to get the desired sequent.\\
+
+	\noindent($L \wedge$)
+
+	Let $R$ be $L \wedge$, that is
+	\begin{prooftree}
+		\noLine
+		\AXC{$\D_0'$}
+		\UIC{$\Gamma, \nabla^r B, \nabla^r C \Rightarrow A$}
+		
+		\RightLabel{$L \wedge$}
+		\UIC{$\Gamma, \nabla^r (B \wedge C) \Rightarrow A$}
+ \end{prooftree}
+ Then by applying $L \wedge$ on $\IH(\D_0', \D_1)$ we have
+ \begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, \nabla^r B, \nabla^r C \Rightarrow A$}
+	
+	\noLine
+	\AXC{$\D_1$}
+	\UIC{$\Sigma, \nabla^n A\Rightarrow \Delta$}
+	
+	\RightLabel{IH}
+	\BIC{$\nabla^n \Gamma, \nabla^{n+r} B, \nabla^{n+r} C, \Sigma \Rightarrow \Delta$}
+
+	\RightLabel{$L \wedge$}
+	\UIC{$\nabla^n \Gamma, \nabla^{n+r} (B \wedge C), \Sigma \Rightarrow \Delta$}
+ \end{prooftree}\quad\\
+
+ 
+\noindent($L \vee$):
+Let
+	 \begin{prooftree}
+		 \noLine
+		 \AXC{$\D_0'$}
+		 \UIC{$\Gamma, \nabla^r B \Rightarrow A$}
+		 
+		 \noLine
+		 \AXC{$\D_0''$}
+		 \UIC{$\Gamma, \nabla^r C \Rightarrow A$}
+		 
+		 \RightLabel{$L \vee$}
+		 \BIC{$\Gamma, \nabla^r (B \vee C) \Rightarrow A$}
+	\end{prooftree}
+	Then
+	\begin{prooftree}
+		\noLine
+		\AXC{$\D_0'$}
+		\UIC{$\Gamma, \nabla^r B \Rightarrow A$}
+		
+		\noLine
+		\AXC{$\D_1$}
+		\UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+		
+		\RightLabel{IH}
+		\BIC{$\nabla^n \Gamma, \nabla^{n+r} B, \Sigma \Rightarrow \Delta$}
+		
+
+		\noLine
+		\AXC{$\D_0''$}
+		\UIC{$\Gamma, \nabla^r C \Rightarrow A$}
+		
+		\noLine
+		\AXC{$\D_1$}
+		\UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+		
+		\RightLabel{IH}
+		\BIC{$\nabla^n \Gamma, \nabla^{n+r} C, \Sigma \Rightarrow \Delta$}
+
+		\RightLabel{$L \vee$}
+		\BIC{$\nabla^n \Gamma, \nabla^{n+r} (B \vee C), \Sigma \Rightarrow \Delta$}
+	 \end{prooftree}\quad\\
+
+ 
+\noindent($L \rightarrow$):
+Let
+ \begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, \nabla^{r+1} (B \rightarrow C) \Rightarrow \nabla^r B$}
+	\noLine
+	\AXC{$\D_0''$}
+	\UIC{$\Gamma, \nabla^{r+1} (B \rightarrow C), \nabla^r C \Rightarrow A$}
+	\RightLabel{$L \rightarrow$}
+	\BIC{$\Gamma, \nabla^{r+1} (B \rightarrow C) \Rightarrow A$}
+ \end{prooftree}
+ Then
+ \begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, \nabla^{r+1} (B \rightarrow C) \Rightarrow \nabla^r B$}
+	\RightLabel{$N^n$} \doubleLine
+	\UIC{$\nabla^n \Gamma, \nabla^{n+r+1} (B \rightarrow C) \Rightarrow \nabla^{n+r} B$}
+	\RightLabel{$Lw$}
+	\UIC{$\nabla^n \Gamma, \nabla^{n+r+1} (B \rightarrow C), \Sigma \Rightarrow \nabla^{n+r} B$}
+
+	\noLine
+	\AXC{$\D_0''$}
+	\UIC{$\Gamma, \nabla^r C, \nabla^{r+1} (B \rightarrow C) \Rightarrow A$}
+	\noLine
+	\AXC{$\D_1$}
+	\UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+	\RightLabel{IH}
+	\BIC{$\nabla^n \Gamma, \nabla^{n+r+1} (B \rightarrow C), \nabla^{n+r} C, \Sigma \Rightarrow \Delta$}
+
+	\RightLabel{$L \rightarrow$}
+	\BIC{$\nabla^n \Gamma, \nabla^{n+r+1} (B \rightarrow C), \Sigma \Rightarrow \Delta$}
+ \end{prooftree}
+
+\noindent($\nabla cut$):
+Assume $\D_0$ ends with a $\nabla cut$ with cut-formula $A'$. Recall that by assumption $A'$ must have a lower rank than $A$.
+ \begin{prooftree}
+	 \noLine
+	 \AXC{$\D_0'$}
+	 \UIC{$\Gamma \Rightarrow A'$}
+	 
+	 \noLine
+	 \AXC{$\D_0''$}
+	 \UIC{$\Pi, \nabla^{n'} A' \Rightarrow A$}
+	 
+	 \RightLabel{$\nabla cut$}
+	 \BIC{$\nabla^{n'} \Gamma, \Pi \Rightarrow A$}
+ \end{prooftree}
+ We must construct a proof-tree for $\nabla^{n + n'} \Gamma, \nabla^n \Pi, \Sigma \Rightarrow \Delta$. We can use the induction hypothesis first to remove $A$, and then use a low rank $\nabla cut$ to remove $A'$.
+ \begin{prooftree}
+	 \noLine
+	 \AXC{$\D_0'$}
+	 \UIC{$\Gamma \Rightarrow A'$}
+	 
+	 \noLine
+	 \AXC{$\D_0''$}
+	 \UIC{$\Pi, \nabla^{n'} A' \Rightarrow A$}
+
+	 \noLine
+	 \AXC{$\D_1$}
+	 \UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+
+	 \RightLabel{IH}
+	 \BIC{$\nabla^n \Pi, \nabla^{n + n'} A', \Sigma \Rightarrow \Delta$}
+	 
+
+	 \RightLabel{$\nabla cut$}
+	 \BIC{$\nabla^{n + n'} \Gamma, \nabla^n \Pi, \Sigma \Rightarrow \Delta$}
+ \end{prooftree}\quad\\  
+
+\noindent($N$):
+Let $A = \nabla B$ and suppose that $\D_0$ proves $\nabla \Gamma \Rightarrow \nabla B$ and $\D_1$ proves $\Sigma, \nabla^n (\nabla B) \Rightarrow \Delta$. Induction hypothesis for $\D_0$'s immediate sub-tree and $\D_1$ gives us $\nabla^{n+1} \Gamma, \Sigma \Rightarrow \Delta$.
+
+\textbf{Part II.} The rest of the cases for $R_0$ can't be solved independent of $R_1$. So in the second part, we will investigate the cases for $R_1$ where the solution can be constructed independent of $R_0$. Notice that this time we have less possibilities for $R_0$, because we have already solved most of them in the first part. We can assume that $R_0$ is either of $R\star$ for $\star \in \{\wedge, \vee_{1/2}, \rightarrow\}$.
+
+ The cases where $R_1$ is an axiom are trivial. Notice that in $L \bot$ case, $\bot$ can't be the cut-formula, since all possible cases for $\D_0$ alter the right side of the sequent, but none of them are able to introduce $\bot$ on the right-side of a sequent.
+ In the remaining cases, where the cut-formula is not principal in $R_1$, the construction is similar to the first part: Apply the same rule on the sequent from the induction hypothesis. But in cases where $A$ is principal in $R_1$, which are to be handeld in the third part, we must also use the induction hypothesis for $\D_0$, both with a different cut-fornula.
+ 
+ We now address the second part of the cases. For the sake of briefness, we will only explain the cases for $L \wedge$, $R \vee_1$, $R \rightarrow$ and $N$, the last two of which are of special concern, in which we must use induction hypothesis with different $n$. The rest would be handled similarly. Now suppose $R_1$ is either of the following.\\
+
+ 
+ \noindent($L \wedge$):
+ Assume that $R_1$ is $L \wedge$, but the cut-formula is not principal.
+ \begin{prooftree}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\Sigma, \nabla^n A, \nabla^r B, \nabla^r C \Rightarrow \Delta$}
+	\RightLabel{$L \wedge$}
+	\UIC{$\Sigma, \nabla^n A, \nabla^r (B \wedge C) \Rightarrow \Delta$}
+ \end{prooftree}
+ From induction hypothesis we have $\nabla^n \Gamma, \Sigma, \nabla^r B \Rightarrow \Delta$. By $L \wedge$ we have $\nabla^n \Gamma, \Sigma, \nabla^r (B \wedge C) \Rightarrow \Delta$.\\
+
+ \noindent($R \vee_1$): Suppose that $R_1$ is $R \vee_1$.
+ \begin{prooftree}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\Sigma, \nabla^n A \Rightarrow B$}
+	\RightLabel{$R \vee_1$}
+	\UIC{$\Sigma, \nabla^n A \Rightarrow B \vee C$}
+ \end{prooftree}
+ Again, use the induction hypothesis to get $\nabla^n \Gamma, \Sigma \Rightarrow B$, then apply $R \vee_1$ to reach the desired sequent.\\
+
+\noindent($R \rightarrow$): Assume $R_1$ is an instance of $R \rightarrow$.
+\begin{prooftree}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\nabla \Sigma, \nabla^{n+1} A, B \Rightarrow C$}
+	\RightLabel{$R \rightarrow$}
+	\UIC{$\Sigma, \nabla^n A \Rightarrow B \rightarrow C$}
+ \end{prooftree}
+From induction hypothesis (with $n = n+1$), we have $\nabla^{n+1} \Gamma, \nabla \Sigma, B \Rightarrow C$. We can apply $R \rightarrow$ to get $\nabla^n \Gamma, \Sigma \Rightarrow B \rightarrow C$.\\
+
+\noindent($N$): Suppose $R_1$ is $N$.
+\begin{prooftree}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+	\RightLabel{$N$}
+	\UIC{$\nabla \Sigma, \nabla^{n+1} A \Rightarrow \nabla \Delta$}
+\end{prooftree}
+If we assume that the cut-formula is $A$, from the induction hypothesis we have $\nabla^n \Gamma, \Sigma \Rightarrow \Delta$. By $N$ we have $\nabla^{n+1} \Gamma, \nabla \Sigma \Rightarrow \nabla \Delta$, which is the desired sequent. Notice that the cut-formula can't be $\nabla A$, because no candidate for $R_0$ proves a sequent with $\nabla$ on its right-side.
+
+ \textbf{Part III.} In the last part of the proof, we will show how the construction takes place in the cases where the cut-formula is principal in $R_1$, which can be either of $L\star (\star \in \{\wedge, \vee, \rightarrow\})$.
+ Any choice for $R_1$ also determines $R_0$, because in all candidates for $R_0$, which can be either of $R\star (\star \in \{\wedge, \vee_{1/2}, \rightarrow\})$, the cut-formula $A$ is principal.
+ 
+ Now suppose $R_0$ and $R_1$ be instances of the following rules, respectively.\\
+
+\noindent($R \wedge$ and $L \wedge$): Suppose $R_0$ is $R \wedge$ and $R_1$ is $L \wedge$.
+\begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma \Rightarrow A_1$}
+	\noLine
+	\AXC{$\D_0''$}
+	\UIC{$\Gamma \Rightarrow A_2$}
+	\RightLabel{$R \wedge$}
+	\BIC{$\Gamma \Rightarrow A_1 \wedge A_2$}
+	
+	\noLine
+	\AXC{$\D_1'$}
+	\UIC{$\Sigma, \nabla^n A_1, \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$L \wedge$}
+	\UIC{$\Sigma, \nabla^n (A_1 \wedge A_2) \Rightarrow \Delta$}
+	
+	\noLine
+	\BIC{}
+\end{prooftree}
+Then
+\begin{prooftree}
+	\AXC{$\D_0''$}\noLine
+	\UIC{$\Gamma \Rightarrow A_2$}
+	\AXC{$\D_0'$}\noLine
+	\UIC{$\Gamma \Rightarrow A_1$}
+	\AXC{$\D_1'$}\noLine
+	\UIC{$\Sigma, \nabla^n A_1, \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$\nabla cut$}
+	\BIC{$\nabla^n \Gamma, \Sigma, \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$\nabla cut$}
+	\BIC{$(\nabla^n \Gamma)^2, \Sigma \Rightarrow \Delta$}
+	\RightLabel{$(Lc)$}\doubleLine
+	\UIC{$\nabla^n \Gamma, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+Notice that both instances of $\nabla cut$ in the above proof-tree have lower rank than $\D$. Also notice that we are using Theorem \ref{thm:stt-lc-elim}.\\
+
+ \noindent($R \vee_1$ or $R \vee_2$, and $L \vee$):
+ 
+Suppose that $R_0$ is either of $R \vee_c ~ (c \in \{1,2\})$ and $R_1$ is $L \vee$.
+\begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma \Rightarrow A_c$}
+	\RightLabel{$R \vee_c$}
+	\UIC{$\Gamma \Rightarrow A_1 \vee A_2$}
+	\noLine
+	\AXC{$\D_{10}$}
+	\UIC{$\Sigma, \nabla^n A_1 \Rightarrow \Delta$}
+	\noLine
+	\AXC{$\D_{11}$}
+	\UIC{$\Sigma, \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$L \vee$}
+	\BIC{$\Sigma, \nabla^n (A_1 \vee A_2) \Rightarrow \Delta$}
+	\noLine
+	\BIC{}
+\end{prooftree}
+Then
+\begin{prooftree}
+	\AXC{$\D_0'$}\noLine
+	\UIC{$\Gamma \Rightarrow A_c$}
+	\AXC{$\D_{1c}$}\noLine
+	\UIC{$\Sigma, \nabla^n A_c \Rightarrow \Delta$}
+	\RightLabel{$\nabla cut$}
+	\BIC{$\nabla^n \Gamma, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+
+\noindent($\D_0$ and $L \rightarrow$): Let $R_0$ and $R_1$ be $R \rightarrow$ and $L \rightarrow$ respectively.
+\begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\nabla \Gamma, A_1 \Rightarrow A_2$}
+	\RightLabel{$R \rightarrow$}
+	\UIC{$\Gamma \Rightarrow A_1 \rightarrow A_2$}
+	\noLine
+	\AXC{$\D_1'$}
+	\UIC{$\Sigma, \nabla^{n+1} (A_1 \rightarrow A_2) \Rightarrow \nabla^n A_1$}
+	\noLine
+	\AXC{$\D_1''$}
+	\UIC{$\Sigma, \nabla^{n+1} (A_1 \rightarrow A_2), \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$L \rightarrow$}
+	\BIC{$\Sigma,  \nabla^{n+1} (A_1 \rightarrow A_2) \Rightarrow \Delta$}
+	\noLine
+	\BIC{}
+\end{prooftree}
+Let the following proof-tree be called $\D$.
+\begin{prooftree}
+	\AXC{$\D_0'$} \noLine
+	\UIC{$\nabla \Gamma, A_1 \Rightarrow A_2$}
+
+	\AXC{$\D_0$} \noLine
+	\UIC{$\Gamma \Rightarrow A_1 \rightarrow A_2$}
+	\AXC{$\D_1''$} \noLine
+	\UIC{$\Sigma, \nabla^{n+1} (A_1 \rightarrow A_2), \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{IH}
+	\BIC{$\nabla^{n+1} \Gamma, \Sigma, \nabla^n A_2 \Rightarrow \Delta$}
+	\LeftLabel{$\D$} \RightLabel{$\nabla cut$}
+	\BIC{$(\nabla^{n+1} \Gamma)^2, \nabla^n A_1, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+Then
+\begin{prooftree}
+	\AXC{$\D_0$} \noLine
+	\UIC{$\Gamma \Rightarrow A_1 \rightarrow A_2$}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\Sigma, \nabla^{n+1} (A_1 \rightarrow A_2) \Rightarrow \nabla^n A_1$}
+	\RightLabel{IH}
+	\BIC{$\nabla^{n+1} \Gamma, \Sigma \Rightarrow \nabla^n A_1$}
+
+	\AXC{$\D$}
+
+	\RightLabel{$\nabla cut$}
+	\BIC{$(\nabla^{n+1} \Gamma)^3, \Sigma^2 \Rightarrow \Delta$}
+
+	\RightLabel{$(Lc)$} \doubleLine
+	\UIC{$\nabla^{n+1} \Gamma, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+
+\vspace{5mm}
+
+Now we have a construction for any two possible pair of rules, in $\gstt^+$. This concludes the proof of the theorem in all cases.
+\end{proof}
+
+The next theorem shows that the $cut$ rule is redundant.
+
+\begin{thm}[Cut-elimination for $\stl$]\label{thm:gstt-eq-gsttp}
+	$\gstt \vdash \Gamma \Rightarrow \Delta$ iff $\gstt^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	First, we will show that for any non-zero-rank proof of $\Gamma \Rightarrow \Delta$ like $\D$ in $\gstt^+$, there is another proof of the same sequent with a strictly lower rank. Suppose $\D$ has subtree(s) called $\D_0$ (and possibly $\D_1$, if the last rule has two premises). Using induction on $h(\D)$, the induction hypothesis for $\D_i ~(i \in \{0,1\})$ gives us a proof-tree with the same conclusion, which we call $\IH(\D_i)$, but with a lower rank, i.e. $\rho(\IH(\D_i)) < \rho(\D_i)$. We now consider two cases for the last rule in $\D$.
+
+	\begin{enumerate}[label=\Roman*]
+		\item If the last rule of $\D$ is of a lower rank than $\D$ itself, which means that the last rule in $\D$ is not the $\nabla cut$ instance with the maximum rank, then we can apply the same last rule on $\IH(\D_0)$ (and possibly $\D_1$), to construct a proof of $\Gamma \Rightarrow \Delta$ with a strictly lower rank.
+		
+		\item If the last rule of $\D$ is the instance of $\nabla cut$ rule instance with the maximum rank, we can apply Theorem \ref{thm:gstt-cut-reduction} to $\IH(\D_0)$ and $\IH(\D_1)$ to prove the same sequent as it would be proved by $\nabla cut$, but with a strictly lower rank.
+	\end{enumerate}
+	So for any proof of $\Gamma \Rightarrow \Delta$ in $\gstt^+$, we also have a proof of rank $0$, which is cut-free, and hence provable in $\gstt$.
+\end{proof}
+
+
+
+\section{Logic of spacetime with intuitionistic implication}
+
+A conservative extension of $\st$ is introduced in the next definition. This extension, which is called $\ist$ here, enrisches $\st$ with intuitionistic implication. $\ist$ is conservative in the sense that adding intuitionistic implication will give no more power to the system in proving propositions in the original language of $\st$.
+
+\input{dfn/ist}
+
+The following theorem shows that $\ist$ is just a conservative extension of $\st$.
+
+\begin{thm}
+  For any $\Gamma$ and $\varphi$ in the language $\mathcal{L}$ we have $\st \vdash \Gamma \Rightarrow \varphi$ if and only if $\ist \vdash \Gamma \Rightarrow \varphi$.
+\end{thm}
+\begin{proof}
+  $(\Rightarrow)$ If $\st \vdash \Gamma \Rightarrow \varphi$, then obviously $\ist \vdash \Gamma \Rightarrow \varphi$, since $\ist$ is just an extension of $\st$.
+
+  $(\Leftarrow)$ Assume $\ist \vdash \Gamma \Rightarrow \varphi$ by a proof-tree $\D$. Now, consider different cases for the last rule in $\D$. We will construct a proof-tree for $\varphi$ in $\st$ in different cases for the last rule in $\D$, using induction on the height of $\D$. All cases are trivial except the cases for $L \supset$ and $R \supset$. But since $\Gamma$ and $\varphi$ are $\mathcal{L}$-formulas, none of them may contain $\supset$, so both these two cases are not feasible.
+\end{proof}
+
+Now, we will introduce the intuitionistic counterparts for $\stt$ and $\gstt$, which we call $\istt$ and $\igstt$. Next, we will also show that all the theorems of the previous section can be easily extended to also contain the cases for rules for intuitionistic implication, yielding the same results for $\ist$ and $\igstt$.
+
+\input{dfn/istt}
+
+The following theorems are proved similar to the theorems in the previous section, with addition of an operator $\supset$ to the language and two rules $L \supset$ and $R \supset$ to the system. So we will only mention these new cases in the following proofs. Observe that presense of these rules in the new systems will not affect the other cases in our proofs.
+
+\begin{lem}[$Id$]\label{lem:istt-id-form}
+	$\istt \vdash \Gamma, A \Rightarrow A$.
+\end{lem}
+\begin{proof}
+	Just like the proof of Lemma \ref{lem:stt-id-form}, we use induction on $A$. All cases are handled similarly, except a new case for $A = (B \supset C)$, which is handled as follows.
+
+	\begin{prooftree}
+		\AXC{IH} \noLine
+		\UIC{$\Gamma, (B \supset C), B \Rightarrow B$}
+		\AXC{IH} \noLine
+		\UIC{$\Gamma, (B \supset C), C \Rightarrow C$}
+		\RightLabel{$L \supset$}
+		\BIC{$\Gamma, (B \supset C), B \Rightarrow C$}
+		\RightLabel{$R \supset$}
+		\UIC{$\Gamma, B \supset C \Rightarrow B \supset C$}
+	\end{prooftree}
+\end{proof}
+
+\begin{lem}[Inversion]\label{lem:istt-inversion}
+	\begin{enumerate}
+		\item If $\stt \vdash_h \Gamma, \nabla^n (A \wedge B) \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, \nabla^n A, \nabla^n B \Rightarrow \Delta$.
+		\item If $\stt \vdash_h \Gamma, \nabla^n (A \vee B) \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, \nabla^n A \Rightarrow \Delta$ and $\stt \vdash_h \Gamma, \nabla^n B \Rightarrow \Delta$.
+		\item If $\stt \vdash_h \Gamma \Rightarrow A \wedge B$ then $\stt \vdash_h \Gamma \Rightarrow A$ and $\stt \vdash_h \Gamma \Rightarrow B$.
+  	\item	If $\istt \vdash_h \Gamma, \nabla^n (A \supset B) \Rightarrow \Delta$ then $\istt \vdash_h \Gamma, \nabla^n B \Rightarrow \Delta$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	Parts 1, 2 and 3 are proved similar to Lemma \ref{lem:stt-inversion}.
+	Similarly, part 4 is proved by induction on the proof-tree $\D$ for $\Gamma, \nabla^n (A \supset B) \Rightarrow \Delta$ assuming it ends with a rule $R$. Axiom cases are trivial. In case $R$ is $L \supset$ and $A \supset B$ is principal, which implies $n = 0$, the subtrees of $\D$ prove the desired sequents. In all other cases just commute $R$ with $\IH(\D_0)$ and $\IH(\D_1)$
+\end{proof}
+
+\begin{thm}[$Lc$]\label{thm:istt-lc-elim} If $\stt \vdash_h \Gamma, A^2 \Rightarrow \Delta$ then $\stt \vdash_h \Gamma, A \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	By induction on the proof for $\Gamma, A^2 \Rightarrow \Delta$, which we call $\D$ and ends with rule $R$.
+	Cases for axioms are trivial. All cases where none of occurrences of $A$ are principal are handled by commuting $R$ with $\IH(\D_i)$. Cases where one occurence of $A$ is principal in $R$, where $R$ is not $L \supset$ are handled similar to Lemma \ref{thm:stt-lc-elim}.
+	Now suppose $R$ is $L \supset$ and $A = A \supset B$.
+	\begin{prooftree}
+		\AXC{$\D_0$} \noLine
+		\UIC{$\Gamma, (A \supset B)^2 \Rightarrow A$}
+		\AXC{$\D_1$} \noLine
+		\UIC{$\Gamma, B, A \supset B \Rightarrow \Delta$}
+		\RightLabel{$L \supset$}
+		\BIC{$\Gamma, (A \supset B)^2 \Rightarrow \Delta$}
+	\end{prooftree}
+	By Lemma \ref{lem:istt-inversion}, part 4, we have $\Gamma, B^2 \Rightarrow \Delta$. By induction hypothesis we have $\Gamma, A \supset B \Rightarrow A$ and $\Gamma, B, \Rightarrow \Delta$. By $L \supset$ we have the desired sequent.
+\end{proof}
+
+
+\begin{thm}\label{thm:istt-eq-ist} $\istt \vdash \Gamma \Rightarrow \Delta$ iff $\ist \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	Similat to the proof of Theorem \ref{thm:stt-eq-st}, except that we would use Theorem \ref{thm:stt-lc-elim}.
+\end{proof}
+
+\begin{thm}\label{thm:isttp-eq-istp}
+	$\istt^+ \vdash \Gamma \Rightarrow \Delta$ iff $\ist^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	Similar to the proof of Theorem \ref{thm:sttp-eq-stp}.
+\end{proof}
+
+
+\begin{lem}\label{lem:i-l-nabla-dist} \quad
+	\begin{enumerate}
+		\item $\istt^+ \vdash \nabla^n (A \vee B) \Rightarrow \nabla^n A \vee \nabla^n B$.
+	
+		\item $\istt^+ \vdash \nabla^n (A \wedge B) \Rightarrow \nabla^n A \wedge \nabla^n B$. 
+	
+		\item $\istt^+ \vdash \nabla^n (A \rightarrow B) \Rightarrow \nabla^n A \rightarrow \nabla^n B$.
+  
+		\item $\istt^+ \vdash \nabla^n (A \supset B) \Rightarrow \nabla^n A \supset \nabla^n B$.
+	\end{enumerate}
+\end{lem}
+\begin{proof}
+	Parts 1, 2 and 3 are proved as in Lemma \ref{lem:l-nabla-dist}. Part 4 can also be proved similarly.
+	\begin{prooftree}
+		\AXC{}
+		\RightLabel{$(Id)$}
+		\UIC{$A, A \supset B \Rightarrow A$}
+	
+		\AXC{}
+		\RightLabel{$(Id)$}
+		\UIC{$A, B \Rightarrow B$}
+	
+		\RightLabel{$L \supset$}
+		\BIC{$A \supset B , A \Rightarrow B$}
+		\RightLabel{$N^{(n)}$} \doubleLine
+		\UIC{$\nabla^n (A \supset B) , \nabla^n A \Rightarrow \nabla^n B$}
+		\RightLabel{$R \supset$}
+		\UIC{$\nabla^n (A \supset B) \Rightarrow \nabla^n A \supset \nabla^n B$}
+	\end{prooftree}
+\end{proof}
+
+\begin{dfn}[$\igstt$]
+	Define the ssystem $\igstt$ as the system with the same rules as $\gstt$, plus the following rules.
+  \begin{multicols}{2}
+    \begin{prooftree}
+      \AXC{$\Gamma, \nabla^n (A \supset B) \Rightarrow \nabla^n A$}
+      \AXC{$\Gamma, \nabla^n B \Rightarrow \Delta$}
+      \RightLabel{$L \supset$}
+      \BIC{$\Gamma, \nabla^n (A \supset B) \Rightarrow \Delta$}
+    \end{prooftree}
+    \columnbreak
+    \begin{prooftree}
+      \AXC{$\Gamma, A \Rightarrow B$}
+      \RightLabel{$R \supset$}
+      \UIC{$\Gamma \Rightarrow A \supset B$}
+    \end{prooftree}
+  \end{multicols}
+
+We denote the system with the $\nabla cut$ rule as $\igstt^+$.
+\end{dfn}
+
+\begin{thm}\label{thm:isttp-eq-igsttp}
+	$\ist^+ \vdash \Gamma \Rightarrow \Delta$ iff $\igstt^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+	The proof is essentially the same as Theorem \ref{thm:sttp-eq-gsttp}, with additional cases for intuitionistic implication rules. Again, the left-to-right direction is obvious from the fact that all rules of $\istt^+$ are just instances of $\igstt^+$'s rules. For the other direction, we will apply induction on the proof-tree for $\Gamma \Rightarrow \Delta$ in $\igstt^+$, which we call $\D$ and assume that ends with a rule $R$. We can construct a proof-tree for $\Gamma \Rightarrow \Delta$ in $\istt^+$ in different cases for $R$, just as we did for $\stt^+$ in Theorem \ref{thm:sttp-eq-gsttp}, using Lemma \ref{lem:i-l-nabla-dist}.
+
+	It remains to handle the cases where $R$ is $L \supset$ and $R \supset$. The case for $R \supset$ is obvoius: We have $R \supset$ also in $\istt^+$, so we can apply it again on the proof-tree from induction hypothesis. In the case for $L \supset$, we have two proof-trees for $\Gamma, \nabla^n (A \supset B) \Rightarrow \nabla^n A$ and $\Gamma, \nabla^n B \Rightarrow \Delta$. Applying $L \supset$ in $\istt^+$ proves $\Gamma, \nabla^n A \supset \nabla^n B \Rightarrow \Delta$. Using part 4 of Lemma \ref{lem:i-l-nabla-dist} and $\nabla cut$, we would have the desired sequent.
+\end{proof}
+
+\begin{lem}\label{lem:isttp-top-redundant} If $\igstt^+ \vdash^r \Gamma , \nabla^n \top \Rightarrow \Delta$ then $\igstt^+ \vdash^r \Gamma \Rightarrow \Delta$.
+\end{lem}
+\begin{proof}
+  The proof is similar to the proof of Lemma \ref{lem:gstt-top-redundant}. Assuming a proof-tree $\D$ for $\Gamma, \nabla^n \top \Rightarrow \Delta$, we will construct a proof-tree for $\Gamma \Rightarrow \Delta$ in cases for the last rule in $\D$, without increasing the rank. In all cases except $L \supset$ and $R \supset$, the construction takes place using induction on the height of $\D$, just as it was in Lemma \ref{lem:gstt-top-redundant}. The cases for $L \supset$ and $R \supset$ are similar: Just apply the same rule again on the sequent from induction hypothesis. Obviously, this will not increase the rank of the resulting proof-tree.
+\end{proof}
+
+Next theorem is just a generalization of Theorem \ref{thm:gstt-cut-reduction} for $\igstt$.
+
+\begin{thm}\label{thm:igstt-cut-reduction}
+	If $\igstt \vdash^{r_0} \Gamma \Rightarrow A$ and $\igstt \vdash^{r_1} \Sigma , \nabla^n A \Rightarrow \Delta$, where $r_0, r_1 < \rho(A)$, then $\igstt \vdash^{r_2} \nabla^n \Gamma, \Sigma \Rightarrow \Delta$ and $r_2 < \rho(A)$.
+\end{thm}
+\begin{proof}
+  We have two proof-trees for $\Gamma \Rightarrow  A$ and $\Sigma , \nabla^n A \Rightarrow \Delta$. Call them $\D_0$ and $\D_1$ respectively. The proof of the theorem is essentially the same as the proof for Theorem \ref{thm:gstt-cut-reduction}, by case analysis on the last rules in $\D_0$ and $\D_1$, and using induction on the height of both of the proof-trees. It remains to check four cases:
+  \begin{enumerate}
+    \item $\D_0$ ends with $L \supset$, no matter which rule $\D_1$ ends with.
+    \item $\D_1$ ends with $R \supset$, no matter which rule $\D_0$ ends with.
+    \item $\D_1$ ends with $L \supset$, and the cut-formula is not principal in it, no matter which rule $\D_0$ ends with.
+    \item $\D_1$ ends with $L \supset$ and the cut-formula is its principal formula, which implies that $\D_0$ must end with $R \supset$.
+  \end{enumerate}
+  In case 1, $\D_0$ proves $\Gamma, \nabla^r (B \supset C) \Rightarrow A$ for some $r$, and has subtrees $\D_0'$ and $\D_0''$ which prove $\Gamma, \nabla^{r} (B \supset C) \Rightarrow \nabla^r B$ and $\Gamma, \nabla^r C \Rightarrow A$, respectively.
+ \begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, \nabla^{r} (B \supset C) \Rightarrow \nabla^r B$}
+	\noLine
+	\AXC{$\D_0''$}
+	\UIC{$\Gamma, \nabla^r C \Rightarrow A$}
+	\RightLabel{$L \supset$}
+	\BIC{$\Gamma, \nabla^{r} (B \supset C) \Rightarrow A$}
+ \end{prooftree}
+ Then
+ \begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, \nabla^{r} (B \supset C) \Rightarrow \nabla^r B$}
+	\RightLabel{$N^n$} \doubleLine
+	\UIC{$\nabla^n \Gamma, \nabla^{n+r} (B \supset C) \Rightarrow \nabla^{n+r} B$}
+	\RightLabel{$Lw$}
+	\UIC{$\nabla^n \Gamma, \nabla^{n+r} (B \supset C), \Sigma \Rightarrow \nabla^{n+r} B$}
+
+	\noLine
+	\AXC{$\D_0''$}
+	\UIC{$\Gamma, \nabla^r C \Rightarrow A$}
+	\noLine
+	\AXC{$\D_1$}
+	\UIC{$\Sigma, \nabla^n A \Rightarrow \Delta$}
+	\RightLabel{IH}
+	\BIC{$\nabla^n \Gamma, \nabla^{n+r} C, \Sigma \Rightarrow \Delta$}
+
+	\RightLabel{$L \supset$}
+	\BIC{$\nabla^n \Gamma, \nabla^{n+r} (B \supset C), \Sigma \Rightarrow \Delta$}
+ \end{prooftree}
+
+
+  In case 2, $\D_1$ proves $\Sigma, \nabla^n A \Rightarrow B \supset C$, and has a subtree $\D_1'$ which proves $\Sigma, \nabla^n A, B \Rightarrow C$. Induction hypothesis for $\D_0$ and $\D_1'$ gives us a proof for $\nabla^n \Gamma, \Sigma, B \Rightarrow C$. The desired sequent would result from an application of $R \supset$
+
+  In case 3, $\D_1$ proves $\Sigma, \nabla^n A, B \supset C \Rightarrow \Delta$, and has subtrees $\D_1'$ and $\D_1''$ which prove $\Sigma, \nabla^n A \Rightarrow B$ and $\Sigma, \nabla^n A, C \Rightarrow \Delta$, respectively. Similar to the previous case use IH to get $\nabla^n \Gamma, \Sigma \Rightarrow B$ and $\nabla^n \Gamma, \Sigma, C \Rightarrow \Delta$ and then apply $L \supset$.
+
+  In case 4, we have
+\begin{prooftree}
+	\noLine
+	\AXC{$\D_0'$}
+	\UIC{$\Gamma, A_1 \Rightarrow A_2$}
+	\RightLabel{$R \supset$}
+	\UIC{$\Gamma \Rightarrow A_1 \supset A_2$}
+	\noLine
+	\AXC{$\D_1'$}
+	\UIC{$\Sigma, \nabla^{n} (A_1 \supset A_2) \Rightarrow \nabla^n A_1$}
+	\noLine
+	\AXC{$\D_1''$}
+	\UIC{$\Sigma, \nabla^{n} (A_1 \supset A_2), \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{$L \supset$}
+	\BIC{$\Sigma,  \nabla^{n} (A_1 \supset A_2) \Rightarrow \Delta$}
+	\noLine
+	\BIC{}
+\end{prooftree}
+Let the following proof-tree be called $\D$.
+\begin{prooftree}
+	\AXC{$\D_0'$} \noLine
+	\UIC{$\Gamma, A_1 \Rightarrow A_2$}
+
+	\AXC{$\D_0$} \noLine
+	\UIC{$\Gamma \Rightarrow A_1 \supset A_2$}
+	\AXC{$\D_1''$} \noLine
+	\UIC{$\Sigma, \nabla^{n} (A_1 \supset A_2), \nabla^n A_2 \Rightarrow \Delta$}
+	\RightLabel{IH}
+	\BIC{$\nabla^{n} \Gamma, \Sigma, \nabla^n A_2 \Rightarrow \Delta$}
+	\LeftLabel{$\D$} \RightLabel{$\nabla cut$}
+	\BIC{$(\nabla^{n} \Gamma)^2, \nabla^n A_1, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+Then
+\begin{prooftree}
+	\AXC{$\D_0$} \noLine
+	\UIC{$\Gamma \Rightarrow A_1 \supset A_2$}
+	\AXC{$\D_1'$} \noLine
+	\UIC{$\Sigma, \nabla^{n} (A_1 \supset A_2) \Rightarrow \nabla^n A_1$}
+	\RightLabel{IH}
+	\BIC{$\nabla^{n} \Gamma, \Sigma \Rightarrow \nabla^n A_1$}
+
+	\AXC{$\D$}
+
+	\RightLabel{$\nabla cut$}
+	\BIC{$(\nabla^{n} \Gamma)^3, \Sigma^2 \Rightarrow \Delta$}
+
+	\RightLabel{$(Lc)$} \doubleLine
+	\UIC{$\nabla^{n} \Gamma, \Sigma \Rightarrow \Delta$}
+\end{prooftree}
+
+\end{proof}
+
+Now we are ready to eliminate the $cut$ rule from $\igstt$, just as we did for $\gstt$.
+
+\begin{thm}[Cut-elimination for $\istl$]\label{thm:igstt-eq-igsttp}
+	$\igstt \vdash \Gamma \Rightarrow \Delta$ iff $\igstt^+ \vdash \Gamma \Rightarrow \Delta$.
+\end{thm}
+\begin{proof}
+  Our strategy is to reduce the rank of any sequent down to zero, just as we did in the proof of Theorem \ref{thm:gstt-eq-gsttp}.
+  Suppose $\Gamma \Rightarrow \Delta$ has an $\igstt$ proof-tree called $\D$. We claim that if $\rho(\D) \neq 0$, then there must exist some other $\igstt$ prooftree for $\Gamma \Rightarrow \Delta$ called $\D'$, such that $\rho(\D') < \rho(\D)$. By induction on the height of $\D$, we can suppose for any prooftree shorter than $\D$, there exists a prooftree with the same conclusion, but a lower rank. Now, consider two cases: First, if the last rule in $\D$ is the $\nabla cut$ instance with the highest rank in $\D$, apply Theorem \ref{thm:igstt-cut-reduction} to the low rank prooftree that we get from induction hypothesis for two subtrees of $\D$. In the second case, if the last rule in $\D$ is not the maximum rank $\nabla cut$ instance, then just apply this rule on the low rank prooftree that we get from induction hypothese for possible subtrees of $\D$.
+\end{proof}
+
+% \section{Applications}
+% In this section, we will see some direct applications of our cut-elimination results. First, we will show that a generalization of Visser's rule is admissible in our system. To this aim, we would need the following lemmas.
+
+% Throughout this section, by $\Gamma \vdash A$ we mean there is a proof in $\stt$ of $A$ with possible assumptions from $\Gamma$.
+
+% \input{thm/l-mp}
+
+% \input{thm/l-impl-elim}
+
+% \input{thm/l-conj-context}
+
+% \begin{rem}
+% 	In the following, $\dotdiv$ is the truncated subtraction defined as $a \dotdiv b = max(a-b, 0)$.
+% \end{rem}
+
+% \input{thm/vissers-rule}
+
+% \begin{cor}[Disjuntion property]
+% 	For all formulas $B$ and $C$, if $\vdash B \vee C$ then either $\vdash B$ or $\vdash C$.
+% \end{cor}
+% \begin{proof}
+% 	Just apply Theorem \ref{thm:visser} for $n = 0$.
+% \end{proof}
+
+% \section{Interpolation theorems}
+% {\color{red} Interpolation theorems do not hold if the extension contains $Fa$ or $Fu$, since they assume cut-ellimination results.}
+
+% Existence of \emph{interpolant} formulas was proved by W. Craig \cite{CraigA} for classical predicate logic. In this section, we prove \emph{Craig's interpolation} theorem for $\istl$ and all its extensions using a method similar to Maehara \cite{maehara1960interpolation}. We will also prove a weaker version called \emph{deductive interpolation} for any extension of $\stl$ containing $L$. For some formula $A$, by $V(A)$ we mean the set of all atomic variables of $A$ and for a multi-set of formulas $\Gamma$, by $V(\Gamma)$ we denote the set of all atomic variables occuring in some formula in $\Gamma$, i.e. $\bigcup_{A \in \Gamma} V(A)$.
+
+% \input{thm/istl-craig}
+
+% \input{thm/stl-deductive}
+
+% \subsection{Lyndon Interpolation}
+
+% We can easily check that our previous construction of interpolants for both $\istl$ and $\stl$ also satisfy Lyndon's definition \cite{Lyndon1959AnIT}. First, we need the following definition. The notion of the \emph{polarity} for an occurence of a subformula in some formula, simply tells if the subformula is in the antecedent of some implication for an even number of times or not.
+
+% \input{dfn/polarity}
+
+% So, for example, we have $p \in V^+((p \rightarrow q) \rightarrow r)$ and $p \in V^-((p \rightarrow q) \wedge r)$.
+
+% \input{thm/stl-lyndon}
+
+% \section{Conclusion and future works}
+
+% \section{Acknowledgement}
+
+% \section{Appendix}
+% % \subsection{Lattice of extensions of $\mathbf{STL}$}
+% % \input{dia/stl}
+
+% \subsection{Detailed proofs}
+
+\bibliographystyle{abbrv}
+\bibliography{refs}
+\end{document}

@@ -1,0 +1,19 @@
+\begin{dfn}
+  Define $\istt$ as the system with the same rules as $\stt$, plus the following rules.
+  \begin{multicols}{2}
+    \begin{prooftree}
+      \AXC{$\Gamma, A \supset B \Rightarrow A$}
+      \AXC{$\Gamma, B \Rightarrow \Delta$}
+      \RightLabel{$L \supset$}
+      \BIC{$\Gamma, A \supset B \Rightarrow \Delta$}
+    \end{prooftree}
+    \columnbreak
+    \begin{prooftree}
+      \AXC{$\Gamma, A \Rightarrow B$}
+      \RightLabel{$R \supset$}
+      \UIC{$\Gamma \Rightarrow A \supset B$}
+    \end{prooftree}
+  \end{multicols}
+\end{dfn}
+
+We denote the system with the $cut$ rule as $\istt^+$.

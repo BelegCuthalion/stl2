@@ -1,0 +1,113 @@
+\begin{dfn}[$\st$, $\st^+$, $\stl$]\label{dfn:st} \quad
+
+\begin{multicols}{3}
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$Id$}
+    \UIC{$A \Rightarrow A$}
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$L \bot$}
+    \UIC{$ \bot \Rightarrow $}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{}
+    \RightLabel{$R \top$}
+    \UIC{$ \Rightarrow \top$}
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{3}
+  \begin{prooftree}
+    \AXC{$ \Gamma, A \Rightarrow \Delta$}
+    \RightLabel{$L \wedge_1$}
+    \UIC{$ \Gamma, \uwave{A \wedge B} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$ \Gamma, B \Rightarrow \Delta$}
+    \RightLabel{$L \wedge_2$}
+    \UIC{$\Gamma, \uwave{A \wedge B} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \AXC{$\Gamma \Rightarrow B$}
+    \RightLabel{$R \wedge$}
+    \BIC{$ \Gamma \Rightarrow \uwave{A \wedge B}$}
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{3}
+  \begin{prooftree}
+    \AXC{$ \Gamma, A \Rightarrow \Delta$}
+    \AXC{$\Gamma, B \Rightarrow \Delta$}
+    \RightLabel{$L \vee$}
+    \BIC{$ \Gamma, \uwave{A \vee B} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \RightLabel{$R \vee_1$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \vee B}$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow B$}
+    \RightLabel{$R \vee_2$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \vee B}$}		
+  \end{prooftree}
+\end{multicols}
+
+ \begin{multicols}{2}
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \AXC{$\Gamma, B \Rightarrow \Delta$}
+    \RightLabel{$L \rightarrow$}
+    \BIC{$\Gamma, \uwave{\nabla (A \rightarrow B)} \Rightarrow \Delta$}		
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\nabla \Gamma, A \Rightarrow B$}
+    \RightLabel{$R \rightarrow$}
+    \UIC{$\Gamma \Rightarrow \uwave{A \rightarrow B}$}		
+  \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{2}
+ \begin{prooftree}
+   \AXC{$ \Gamma \Rightarrow \Delta$}
+   \RightLabel{$L w$}
+   \UIC{$ \Gamma, \uwave{A} \Rightarrow \Delta$}
+ \end{prooftree}
+ \columnbreak
+ \begin{prooftree}
+   \AXC{$ \Gamma \Rightarrow$}
+   \RightLabel{$R w$}
+    \UIC{$\Gamma \Rightarrow \uwave{A}$}		
+ \end{prooftree}
+\end{multicols}
+
+\begin{multicols}{1}
+ \begin{prooftree}
+   \AXC{$ \Gamma, A, A \Rightarrow \Delta$}
+   \RightLabel{$Lc$}
+   \UIC{$\Gamma, \uwave{A} \Rightarrow \Delta$}		
+ \end{prooftree}
+\end{multicols}
+
+\begin{prooftree}
+  \AXC{$\Gamma \Rightarrow \Delta$}
+  \RightLabel{$N$}
+  \UIC{$\nabla \Gamma \Rightarrow \nabla \Delta$}
+\end{prooftree}
+
+By $\st \vdash \Gamma \Rightarrow \Delta$ we mean that the sequent $\Gamma \Rightarrow \Delta$ provable in this system.
+
+By $\st^+ \vdash \Gamma \Rightarrow \Delta$ we mean that the sequent $\Gamma \Rightarrow \Delta$ provable in the system $\st$, augmented with the $cut$ rule.
+
+We denote the \emph{spacetime logic} by $\stl$, which is the set of all sequents provable in $\st^+$.
+\end{dfn}

@@ -1,0 +1,19 @@
+\begin{dfn}\label{dfn:ist}
+	Define $\ist$ as the logic of the sequent-style system over the language $\mathcal{L} \cup \{\supset\}$ defined by the same rules as Definition \ref{dfn:st}, plus the following rules.
+\end{dfn}
+\begin{multicols}{2}
+  \begin{prooftree}
+    \AXC{$\Gamma \Rightarrow A$}
+    \AXC{$\Gamma, B \Rightarrow \Delta$}
+    \RightLabel{$L \supset$}
+    \BIC{$\Gamma, A \supset B \Rightarrow \Delta$}
+  \end{prooftree}
+  \columnbreak
+  \begin{prooftree}
+    \AXC{$\Gamma, A \Rightarrow B$}
+    \RightLabel{$R \supset$}
+    \UIC{$\Gamma \Rightarrow A \supset B$}
+  \end{prooftree}
+\end{multicols}
+By $\ist \vdash \Gamma \Rightarrow \Delta$ we mean that $\Gamma \Rightarrow \Delta$ is provable in $\ist$.
+By $\ist^+ \vdash \Gamma \Rightarrow \Delta$ we mean that $\Gamma \Rightarrow \Delta$ is provable in $\ist$, augumented with the $cut$ rule.
